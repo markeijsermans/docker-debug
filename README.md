@@ -7,5 +7,9 @@ This image is built from `ubuntu:16.04` and contains common networking and other
 
 Tip:
 ```sh
-docker run --privileged --rm -ti markeijsermans/debug
+# running in privileged+host mode can be useful
+docker run --privileged --net=host --rm -ti markeijsermans/debug
+
+# start a simple http server
+docker run --rm -ti -p 8000:8000 markeijsermans/debug python3 -m http.server
 ```
