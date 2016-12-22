@@ -46,5 +46,5 @@ RUN apt-get update && \
   apt-get clean
 
 # lets just set the TERM for `exec`ing into a container
-ENV TERM=xterm-color
+ENV TERM=xterm
 ADD .bashrc /root/.bashrc
