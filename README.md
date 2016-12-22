@@ -5,7 +5,7 @@ An image meant for debugging. Very often production containers are minimal in co
 
 This image is built from `ubuntu:16.04` and contains common networking and other system tools. See `Dockerfile` for current list of tools.
 
-Tip:
+### Tips
 ```sh
 # running in privileged+host mode can be useful
 docker run --privileged --net=host --rm -ti markeijsermans/debug
@@ -13,3 +13,8 @@ docker run --privileged --net=host --rm -ti markeijsermans/debug
 # start a simple http server
 docker run --rm -ti -p 8000:8000 markeijsermans/debug python3 -m http.server
 ```
+
+### Todo
+* curl with HTTP/2 support
+* remove packages that are never used
+* benchmark tools - ab, [wrk](https://github.com/wg/wrk), [slow cooker](https://github.com/buoyantio/slow_cooker)
