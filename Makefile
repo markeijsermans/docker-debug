@@ -1,10 +1,9 @@
-IMG := markeijsermans/debug
-TAG := v1
+IMG := markeijsermans/debug:latest
+
+all: build
 
 build:
-	docker build -t $(IMG):$(TAG) .
-	docker tag $(IMG):$(TAG) $(IMG):latest
+	docker build -t $(IMG) .
 
 push:
-	docker push $(IMG):$(TAG)
-	docker push $(IMG):latest
+	docker push $(IMG)
