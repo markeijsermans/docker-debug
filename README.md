@@ -15,5 +15,4 @@ docker run --rm -ti -p 8000:8000 markeijsermans/debug python3 -m http.server
 ```
 
 ### Todo
-* curl with HTTP/2 support
 * remove packages that are never used
