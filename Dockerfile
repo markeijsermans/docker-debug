@@ -91,6 +91,9 @@ RUN cd /tmp && \
   cd / && \
   rm -rf /tmp/curl-7.54.1
 
+# add simple server
+ADD simple-server /usr/local/bin/
+
 # lets just set the TERM for `exec`ing into a container
 ENV TERM=xterm
 ADD .bashrc /root/.bashrc

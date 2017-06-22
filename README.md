@@ -10,8 +10,11 @@ This image is built from `ubuntu:16.04` and contains common networking and other
 # running in privileged+host mode can be useful
 docker run --privileged --net=host --rm -ti markeijsermans/debug
 
-# start a simple http server
-docker run --rm -ti -p 8000:8000 markeijsermans/debug python3 -m http.server
+# start a performant simple http server - only prints our "OK". Useful for load testing
+docker run --rm -ti -p 8080:8080 markeijsermans/debug simple-server
+
+# start a python http server that hosts files
+docker run --rm -ti -p 8080:8080 markeijsermans/debug python3 -m http.server
 ```
 
 ### Todo
