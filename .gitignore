@@ -1,2 +1,7 @@
 .idea
-simple-server
+.idea_modules
+*.iml
+*.swp
+.DS_Store
+
+kitchen-sink-debug/simple-server

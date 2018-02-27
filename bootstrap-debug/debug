@@ -1,0 +1,71 @@
+#!/bin/sh
+
+TOOLS="bash vim curl bind-tools tree jq"
+TMPDIR=
+NEW_PKGS=
+
+main() {
+  if [ -n "$1" ]; then
+  	TOOLS="$@"
+  fi
+
+  # ensure bash gets installed
+  if echo $TOOLS | grep -vw "bash" > /dev/null; then
+    TOOLS="$TOOLS bash"
+  fi
+
+  echo -e "Installing: \033[38;5;003m$TOOLS\033[0m"
+  echo "These will be uninstalled on shell exit"
+
+  TMPDIR=$(mktemp -d)
+  trap clean SIGTERM SIGINT SIGHUP
+
+  # install apps
+  apk info --update -q | sort > $TMPDIR/installed
+  echo $TOOLS | tr ' ' "\n" | sort > $TMPDIR/desired
+  NEW_PKGS=$(comm -13 $TMPDIR/installed $TMPDIR/desired)
+  apk add $NEW_PKGS
+
+  export TERM=xterm-256color # exec'ing into a container usually gives you an unset or dumb $TERM
+
+  local rcArg=""
+  if [ ! -e "~/.bashrc" ]; then
+  	rcArg="--rcfile $(bashrc)"
+  fi
+  
+  bash $rcArg
+
+  clean
+}
+
+clean() {
+  if [ -d $TMPDIR ]; then
+    rm -rf $TMPDIR
+  fi
+  apk del $NEW_PKGS
+}
+
+bashrc() {
+  local file="$TMPDIR/.bashrc"
+  cat <<- 'EOF' > $file
+	[ -z "$PS1" ] && return # bail if not running interactively
+
+	HISTCONTROL=ignoredups:ignorespace
+	shopt -s histappend
+	HISTSIZE=1000
+	HISTFILESIZE=2000
+	shopt -s checkwinsize
+
+	if [ -f ~/.bash_aliases ]; then
+	    . ~/.bash_aliases
+	fi
+	if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+	    . /etc/bash_completion
+	fi
+    #                             (                  error-code                                                                  time                                 hostname                            pwd               )
+    export PS1="\[\033[38;5;007m\](\[\033[38;5;196m\]\$(rc=\$?; if [[ \$rc != 0 ]]; then echo -n \"\$rc \"; fi)\[\033[38;5;201m\]\A\[\033[38;5;15m\] \[\033[38;5;93m\]\h\[\033[38;5;7m\]:\[\033[38;5;21m\]\w\[\033[38;5;7m\]) "
+EOF
+  echo "$file"
+}
+
+main "$@"

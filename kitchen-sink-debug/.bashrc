@@ -94,9 +94,10 @@ fi
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
-#if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-#    . /etc/bash_completion
-#fi
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
 
-export PS1="\[\033[38;5;7m\](\[$(tput sgr0)\]\[\033[38;5;1m\]\$(rc=\$?; if [[ \$rc != 0 ]]; then echo -n \"\$rc \"; fi)\[$(tput sgr0)\]\[\033[38;5;243m\]\A\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;14m\]\h\[$(tput sgr0)\]\[\033[38;5;7m\]:\[$(tput sgr0)\]\[\033[38;5;12m\]\w\[$(tput sgr0)\]\[\033[38;5;7m\])\[$(tput sgr0)\] "
+#                             (                                  error-code                                                                                  time                                                                                 hostname                                                            pwd                               )
+export PS1="\[\033[38;5;007m\](\[$(tput sgr0)\]\[\033[38;5;196m\]\$(rc=\$?; if [[ \$rc != 0 ]]; then echo -n \"\$rc \"; fi)\[$(tput sgr0)\]\[\033[38;5;201m\]\A\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;93m\]\h\[$(tput sgr0)\]\[\033[38;5;7m\]:\[$(tput sgr0)\]\[\033[38;5;21m\]\w\[$(tput sgr0)\]\[\033[38;5;7m\])\[$(tput sgr0)\] "
 export EDITOR=vim

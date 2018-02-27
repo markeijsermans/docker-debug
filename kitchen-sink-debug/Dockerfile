@@ -1,3 +1,10 @@
+FROM golang:1.10 as builder
+WORKDIR /go/src/github.com/markeijsermans/docker-debug/kitchen-sink-debug
+COPY simple-server.go .
+RUN go get -v .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o simple-server .
+
+
 FROM ubuntu:16.04
 MAINTAINER Mark Eijsermans <mark.eijsermans@gmail.com>
 
@@ -92,7 +99,7 @@ RUN cd /tmp && \
   rm -rf /tmp/curl-7.54.1
 
 # add simple server
-ADD simple-server /usr/local/bin/
+COPY --from=builder /go/src/github.com/markeijsermans/docker-debug/kitchen-sink-debug/simple-server .
 
 # lets just set the TERM for `exec`ing into a container
 ENV TERM=xterm

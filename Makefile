@@ -1,13 +1,15 @@
-IMG := markeijsermans/debug:latest
+IMG := markeijsermans/debug
 
-all: deps build
+all: build-kitchen-sink build-bootstrap
 
-deps:
-	go get .
+build-bootstrap:
+	cd bootstrap-debug && docker build -t $(IMG):alpine .
 
-build:
-	GOOS=linux GOARCH=amd64 go build -v -o simple-server .
-	docker build -t $(IMG) .
+build-kitchen-sink:
+	cd kitchen-sink-debug && docker build -t $(IMG):kitchen-sink .
+	docker tag $(IMG):kitchen-sink $(IMG):latest
 
 push:
-	docker push $(IMG)
+	docker push $(IMG):alpine
+	docker push $(IMG):kitchen-sink
+	docker push $(IMG):latest
